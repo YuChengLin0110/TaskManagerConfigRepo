@@ -1,0 +1,90 @@
+spring:
+  application:
+    name: taskmanager
+
+  data:
+    redis:
+      host: localhost  # Redis 
+      port: 6379
+      timeout: 3000ms
+
+  redis:
+    lettuce:
+      pool:
+        max-active: 10  # 連線池最大活動連線數
+        max-idle: 10    # 最大空閒連線數
+        min-idle: 1     # 最小空閒連線數
+        max-wait: 1s    # 最大等待時間
+
+  task:
+    execution:
+      pool:
+        core-size: 5        # 執行緒池最小執行緒數量
+        max-size: 10        # 執行緒池最大執行緒數量
+        queue-capacity: 25  # 任務隊列容量
+        keep-alive: 60s     # 執行緒空閒超過此時間會被銷毀
+
+  datasource:
+    url: jdbc:h2:mem:taskdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false  # H2 記憶體模式資料庫URL ， 重啟後資料會清空
+    driver-class-name: org.h2.Driver  # JDBC Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect  # Hibernate 對應 H2
+    hibernate:
+      ddl-auto: update  # 自動建立 / 更新資料表結構
+
+  h2:
+    console:
+      enabled: true  # 啟用H2 console
+      path: /h2-console  # H2 console 的 URL
+
+jwt:
+  secretKey: taskManagerSuperSecretKey1234567890  # JWT 秘鑰
+
+server:
+  port: 8080
+
+rabbitmq:
+  retry:
+    max: 10  # 最大重試次數
+  exchange: task.exchange  # 主要交換器名稱
+  exchange.dlq: task.exchange.dlq # 死信交換器名稱
+  routingkey:
+    task:
+      pattern: task.#          # 路由鍵模式
+      created: task.created
+      assigned: task.assigned
+      overdue: task.overdue
+      dlq: task.dlq
+  queue:
+    task:
+      created: task.created.queue
+      assigned: task.assigned.queue
+      overdue: task.overdue.queue
+      dlq: task.dlq.queue
+
+redis:
+  lock:
+    key:
+      outboxevent: outboxevent_scheduler_lock  # 分布式鎖鍵名
+    expire:
+      outboxevent: 120000  # 鎖過期時間
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs  # OpenAPI 
+  swagger-ui:
+    path: /swagger-ui.html  # Swagger UI 路徑
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml  # MyBatis mapper XML 位置
+  type-aliases-package: com.example.taskmanager.entity  # MyBatis type aliases package
+  configuration:
+    map-underscore-to-camel-case: true  # 將資料庫欄位名稱（通常是蛇形命名， user_name）轉換為 Java 物件的駝峰命名（userName），避免 SQL 結果和 Java 類的映射錯誤
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # 印出 MyBatis 執行的 SQL 在 console
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus,health,metrics  # 指定哪些 Actuator endpoint 是對外開放的（可透過 HTTP 存取，例如 /actuator/health）
