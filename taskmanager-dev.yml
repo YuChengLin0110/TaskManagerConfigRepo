@@ -27,6 +27,8 @@ spring:
   datasource:
     master:
       url: jdbc:mysql://mysql-master:3306/task_manager?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+      username: root
+      password: root
       driver-class-name: com.mysql.cj.jdbc.Driver  # JDBC Driver
       hikari:
         maximum-pool-size: 10
@@ -36,7 +38,9 @@ spring:
         pool-name: HikariMasterPool
         max-lifetime: 1800000
     slave:
-        url: jdbc:mysql://mysql-master:3306/task_manager?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+        url: jdbc:mysql://mysql-slave:3306/task_manager?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+        username: root
+        password: root
         driver-class-name: com.mysql.cj.jdbc.Driver  # JDBC Driver
         hikari:
           maximum-pool-size: 20
