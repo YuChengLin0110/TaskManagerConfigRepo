@@ -26,7 +26,7 @@ spring:
 
   datasource:
     master:  #正式環境不使用 allowPublicKeyRetrieval=true , useSSL 改成 true
-      url: jdbc:mysql://localhost:3307/task_manager?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+      url: ${MYSQL_JDBC}
       driver-class-name: com.mysql.cj.jdbc.Driver  # JDBC Driver
       hikari:
         maximum-pool-size: 10  # 最多同時存在幾個 connection
@@ -36,7 +36,7 @@ spring:
         pool-name: HikariMasterPool
         max-lifetime: 1800000  # 每個 connection 存活時間，過久會自動斷開再創建
     slave:
-        url: jdbc:mysql://localhost:3308/task_manager?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+        url: ${MYSQL_JDBC}
         driver-class-name: com.mysql.cj.jdbc.Driver  # JDBC Driver
         hikari:
           maximum-pool-size: 20
