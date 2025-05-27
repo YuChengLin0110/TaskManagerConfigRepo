@@ -25,18 +25,30 @@ spring:
         keep-alive: 60s     # 執行緒空閒超過此時間會被銷毀
 
   datasource:
-    url: jdbc:h2:mem:taskdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false  # H2 記憶體模式資料庫URL ， 重啟後資料會清空
-    driver-class-name: org.h2.Driver  # JDBC Driver
-
+    master:  #正式環境不使用 allowPublicKeyRetrieval=true , useSSL 改成 true
+      url: jdbc:mysql://localhost:3307/task_manager?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+      driver-class-name: com.mysql.cj.jdbc.Driver  # JDBC Driver
+      hikari:
+        maximum-pool-size: 10  # 最多同時存在幾個 connection
+        minimum-idle: 2  # 最少保持幾個閒置連線
+        idle-timeout: 30000  # 閒置多久會被關閉（毫秒）
+        connection-timeout: 300000  # 等待連線的最大時間
+        pool-name: HikariMasterPool
+        max-lifetime: 1800000  # 每個 connection 存活時間，過久會自動斷開再創建
+    slave:
+        url: jdbc:mysql://localhost:3308/task_manager?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+        driver-class-name: com.mysql.cj.jdbc.Driver  # JDBC Driver
+        hikari:
+          maximum-pool-size: 20
+          minimum-idle: 5
+          idle-timeout: 30000
+          connection-timeout: 300000
+          pool-name: HikariSlavePool
+          max-lifetime: 1800000
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect  # Hibernate 對應 H2
+    database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: update  # 自動建立 / 更新資料表結構
-
-  h2:
-    console:
-      enabled: true  # 啟用H2 console
-      path: /h2-console  # H2 console 的 URL
 
 jwt:
   secretKey: ${JWT_SECRET_KEY}  # JWT 秘鑰
