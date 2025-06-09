@@ -5,7 +5,7 @@ spring:
   data:
     redis:
       host: ${SPRING_REDIS_HOST}  # Redis 
-      port: ${SPRING_REDIS_PORT:6379}
+      port: ${SPRING_REDIS_PORT}
       timeout: 3000ms
 
   redis:
@@ -50,7 +50,7 @@ spring:
           pool-name: HikariSlavePool
           max-lifetime: 1800000
   jpa:
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: update  # 自動建立 / 更新資料表結構
 
@@ -58,7 +58,7 @@ jwt:
   secretKey: ${JWT_SECRET_KEY}  # JWT 秘鑰
 
 server:
-  port: ${SERVER_PORT:8080}
+  port: ${SERVER_PORT}
 
 rabbitmq:
   retry:

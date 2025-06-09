@@ -4,7 +4,7 @@ spring:
 
   data:
     redis:
-      host: localhost  # Redis 
+      host: redis  # Redis 
       port: 6379
       timeout: 3000ms
 
@@ -50,7 +50,7 @@ spring:
           pool-name: HikariSlavePool
           max-lifetime: 1800000
   jpa:
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: update  # 自動建立 / 更新資料表結構
 
