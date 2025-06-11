@@ -79,13 +79,6 @@ rabbitmq:
       overdue: task.overdue.queue
       dlq: task.dlq.queue
 
-redis:
-  lock:
-    key:
-      outboxevent: outboxevent_scheduler_lock  # 分布式鎖鍵名
-    expire:
-      outboxevent: 120000  # 鎖過期時間
-
 springdoc:
   api-docs:
     path: /v3/api-docs  # OpenAPI 
