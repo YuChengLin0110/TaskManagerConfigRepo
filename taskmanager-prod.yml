@@ -53,6 +53,21 @@ spring:
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: update  # 自動建立 / 更新資料表結構
+      
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: email@gmail.com
+    password: password
+    protocol: smtp
+    default-encoding: UTF-8
+    test-connection: false
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 jwt:
   secretKey: ${JWT_SECRET_KEY}  # JWT 秘鑰
