@@ -69,6 +69,23 @@ spring:
           starttls:
             enable: true
 
+  kafka:
+    bootstrap-servers: kafka:9092
+    consumer:
+      group-id: taskmanager-notification-group
+      auto-offset-reset: earliest
+      key-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: com.example.taskmanager.entity.dto
+    producer:
+      key-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+# 自訂 @ConditionalOnProperty 切換 notification publisher 使用 一般Listener 或是 kafka
+notification:
+  mode: kafka # 或 default
+
 jwt:
   secretKey: ${JWT_SECRET_KEY}  # JWT 秘鑰
 
