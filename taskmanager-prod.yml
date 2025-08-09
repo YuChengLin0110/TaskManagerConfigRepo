@@ -70,17 +70,17 @@ spring:
             enable: true
 
   kafka:
-    bootstrap-servers: kafka:9092
+    bootstrap-servers: kafka:9092 # Kafka 伺服器的位置
     consumer:
-      group-id: taskmanager-notification-group
-      auto-offset-reset: earliest
-      key-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      group-id: taskmanager-notification-group # 消費者群組 ID，決定一組消費者共享偏移量
+      auto-offset-reset: earliest # 如果找不到偏移量，從最早訊息開始讀取
+      key-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer # key 用 JSON 方式反序列化
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer # value 用 JSON 方式反序列化
       properties:
-        spring.json.trusted.packages: com.example.taskmanager.entity.dto
+        spring.json.trusted.packages: com.example.taskmanager.entity.dto # 指定反序列化時允許信任的類別所在的 package ，如果不指定，Spring Kafka 的 JsonDeserializer 預設會拒絕所有反序列化請求
     producer:
-      key-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      key-serializer: org.springframework.kafka.support.serializer.JsonSerializer # key 用 JSON 方式序列化
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer # value 用 JSON 方式序列化
 
 # 自訂 @ConditionalOnProperty 切換 notification publisher 使用 一般Listener 或是 kafka
 notification:
