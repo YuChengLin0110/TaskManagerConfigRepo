@@ -108,12 +108,16 @@ rabbitmq:
       created: task.created
       assigned: task.assigned
       overdue: task.overdue
+      batch:
+        created: task.batch.created
       dlq: task.dlq
   queue:
     task:
       created: task.created.queue
       assigned: task.assigned.queue
       overdue: task.overdue.queue
+      batch:
+        created: task.batch.created.queue
       dlq: task.dlq.queue
 
 springdoc:
